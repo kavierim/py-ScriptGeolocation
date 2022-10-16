@@ -21,7 +21,7 @@
 <py-script>
 
 import js
-from pyodide import create_proxy
+from pyodide.ffi import create_proxy
 import folium
 
 # Show the map
@@ -35,7 +35,7 @@ def showPosition(position):
     m = folium.Map(location=[position.coords.latitude, position.coords.longitude], zoom_start=15, tiles='https://tiles.kartat.kapsi.fi/peruskartta/{z}/{x}/{y}.jpg', attr='Maanmittauslaitos')
     positionDIV.innerHTML = m._repr_html_()
 
-  # proxy the showPosition function
+# proxy the showPosition function
 showPositionProxy = create_proxy(showPosition)
 
 # call the geolocation API
