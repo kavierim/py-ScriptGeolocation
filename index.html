@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <title>Geolocation from py-script</title>
+
+</head>
+<body>
+
+<div id="Header">
+    <h1>Geolocation from py-script</h1>
+</div>
+<div id="map">bar</div>
+<div id="accuracy">foo</div>
+
+<py-env>
+  - folium
+</py-env>
+
+<py-script>
+
+import js
+from pyodide import create_proxy
+import folium
+
+# Show the map
+def showPosition(position):
+    positionDIV = document.getElementById("map")
+    accuracyDIV = document.getElementById("accuracy")
+
+    accuracyDIV.innerHTML = f"Accuracy: {position.coords.accuracy:.0f} meters."
+
+    m = folium.Map(location=[position.coords.latitude, position.coords.longitude], zoom_start=15, tiles='https://tiles.kartat.kapsi.fi/peruskartta/{z}/{x}/{y}.jpg', attr='Maanmittauslaitos')
+    positionDIV.innerHTML = m._repr_html_()
+
+  # proxy the showPosition function
+showPositionProxy = create_proxy(showPosition)
+
+# call the geolocation API
+if js.navigator.geolocation :
+    # call the geolocation function
+    js.navigator.geolocation.getCurrentPosition(showPositionProxy)
+else:
+    print("Geolocation is not supported!")
+
+</py-script>
+
+</body>
+</html>
