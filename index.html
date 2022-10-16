@@ -31,9 +31,30 @@ def showPosition(position):
     accuracyDIV = document.getElementById("accuracy")
     # Get accuracy
     accuracyDIV.innerHTML = f"Accuracy: {position.coords.accuracy:.0f} meters."
-    # Generate map
-    m = folium.Map(location=[position.coords.latitude, position.coords.longitude], zoom_start=15, tiles='https://tiles.kartat.kapsi.fi/peruskartta/{z}/{x}/{y}.jpg', attr='Maanmittauslaitos')
+    # Get position
+    latitude = position.coords.latitude
+    longitude = position.coords.longitude
+    # Empty parameters
+    tiles = ""
+    attr = ""
+
+    #check if position is inside Finland
+    if latitude < 70.1 and latitude > 59.8 and longitude < 31.6 and longitude > 19.0:
+        # Use Maastokartta tiles
+        tiles = "https://tiles.kartat.kapsi.fi/peruskartta/{z}/{x}/{y}.jpg"
+        attr = "Maanmittauslaitos"
+    else:
+        # Use OpenStreetMap tiles
+        tiles = "OpenStreetMap"
+        attr = None
+
+    # Create map
+    m = folium.Map(location=[latitude, longitude], zoom_start=15, tiles=tiles, attr=attr)
+    # Create marker
+    folium.Marker([latitude, longitude]).add_to(m)
+    # Set HTML
     positionDIV.innerHTML = m._repr_html_()
+
 
 # proxy the showPosition function
 showPositionProxy = create_proxy(showPosition)
