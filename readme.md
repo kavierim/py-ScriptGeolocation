@@ -2,6 +2,9 @@
 
 This is a simple project to demonstrate how to use Geolocation API via py-script.
 
+You can try it out here: [https://kavierim.github.io/py-ScriptGeolocation//](https://kavierim.github.io/py-ScriptGeolocation/)
+
+
 ## Getting Started
 
 To get a local copy up and open index.html in your browser.
