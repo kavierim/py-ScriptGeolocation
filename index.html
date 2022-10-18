@@ -3,13 +3,13 @@
 <head>
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
-    <title>Geolocation from py-script</title>
+    <title>py-script Geolocation</title>
 
 </head>
 <body>
 
 <div id="Header">
-    <h1>Geolocation from py-script</h1>
+    <h1>py-script Geolocation</h1>
 </div>
 <div id="map"></div>
 <div id="accuracy"></div>
@@ -24,19 +24,29 @@ import js
 from pyodide.ffi import create_proxy
 import folium
 
+# Global variables
+# Empty parameters
+tiles = ""
+attr = ""
+# folium marker
+marker = folium.Marker(location=[0, 0], draggable=False)
+# folium map
+m = folium.Map(location=[0, 0], zoom_start=1)
+
+# Get DIV elements
+positionDIV = document.getElementById("map")
+accuracyDIV = document.getElementById("accuracy")
+# show world map, until geolocation is available
+positionDIV.innerHTML = m._repr_html_()
+
+
 # Show the map
 def showPosition(position):
-    # Get DIV elements
-    positionDIV = document.getElementById("map")
-    accuracyDIV = document.getElementById("accuracy")
     # Get accuracy
     accuracyDIV.innerHTML = f"Accuracy: {position.coords.accuracy:.0f} meters."
     # Get position
     latitude = position.coords.latitude
     longitude = position.coords.longitude
-    # Empty parameters
-    tiles = ""
-    attr = ""
 
     #check if position is inside Finland
     if latitude < 70.1 and latitude > 59.8 and longitude < 31.6 and longitude > 19.0:
@@ -48,11 +58,14 @@ def showPosition(position):
         tiles = "OpenStreetMap"
         attr = None
 
-    # Create map
+    # Create new map
     m = folium.Map(location=[latitude, longitude], zoom_start=15, tiles=tiles, attr=attr)
-    # Create marker
-    folium.Marker([latitude, longitude]).add_to(m)
-    # Set HTML
+
+    # update marker
+    marker.location = [latitude, longitude]
+    marker.add_to(m)
+
+    # Set HTML to positionDIV
     positionDIV.innerHTML = m._repr_html_()
 
 
