@@ -36,8 +36,8 @@ marker = folium.Marker(location=[0, 0], draggable=False)
 m = folium.Map(location=[0, 0], zoom_start=1)
 
 # Get DIV elements
-positionDIV = document.getElementById("map")
-accuracyDIV = document.getElementById("accuracy")
+positionDIV = js.document.getElementById("map")
+accuracyDIV = js.document.getElementById("accuracy")
 # show world map, until geolocation is available
 positionDIV.innerHTML = m._repr_html_()
 
